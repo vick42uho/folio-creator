@@ -1,10 +1,20 @@
-เขียน README.md
-# Folio Creator
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+</div>
 
-เป็นโปรเจกต์ที่เขียนขึ้นโดย [Wick](https://github.com/vick42uho/folio-creator) สำหรับสร้าง Portfolio และ Resume (CV) โดยใช้การใช้ AI สำหรับการสร้างข้อความ โดยใช้การใช้ Glassmorphism design และสนับสนุนภาษาไทยและอังกฤษ และสามารถสร้าง PDF ได้
+# Run and deploy your AI Studio app
 
-## การติดตั้ง
+This contains everything you need to run your app locally.
 
-npm install
+View your app in AI Studio: https://ai.studio/apps/drive/1PJCX336nB-z9Z6ZuWs4QvXj4QH3XJdrN
 
-npm run dev
+## Run Locally
+
+**Prerequisites:**  Node.js
+
+
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`

@@ -4,8 +4,8 @@ import { INITIAL_DATA, PortfolioData, Language, LABELS, ThemeOption, LayoutConfi
 import Editor from './components/Editor';
 import Preview from './components/Preview';
 import { Download, FileText, LayoutTemplate, Languages, Sparkles, Palette, Monitor, Zap, PenTool, Terminal, ArrowUp, ArrowDown, ZoomIn, Maximize, Image as ImageIcon, ChevronDown, ChevronUp, FileOutput, Wand2, Loader2, QrCode, Lock, CheckCircle, X, Upload, Coffee, Heart } from 'lucide-react';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import { toPng } from 'html-to-image';
+import { jsPDF } from 'jspdf';
 import { suggestDesign } from './services/geminiService';
 
 const PRESET_COLORS = [
@@ -119,55 +119,44 @@ const App: React.FC = () => {
 
   const actualDownloadPDF = async () => {
     setIsGenerating(true);
-    await new Promise(resolve => setTimeout(resolve, 100));
+    // Slight delay to allow UI to settle to avoid glitch
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     try {
-      const element = document.getElementById('portfolio-content');
-      if (!element) throw new Error("Content not found");
+        const element = document.getElementById('portfolio-content');
+        if (!element) throw new Error("Content not found");
 
-      const A4_WIDTH_PX = 794; 
-      
-      const container = document.createElement('div');
-      container.style.position = 'absolute';
-      container.style.left = '-9999px';
-      container.style.top = '0';
-      container.style.width = `${A4_WIDTH_PX}px`; 
-      
-      const clone = element.cloneNode(true) as HTMLElement;
-      clone.style.transform = 'none'; 
-      clone.style.margin = '0';
-      
-      container.appendChild(clone);
-      document.body.appendChild(container);
+        // 1. Generate High-Res Image using html-to-image
+        // Using pixelRatio 2.5 ensures text remains crisp even when rasterized
+        const imgDataUrl = await toPng(element, {
+            quality: 1.0,
+            pixelRatio: 2.5,
+            cacheBust: true,
+            backgroundColor: theme === 'cyber' ? '#05050a' : '#ffffff'
+        });
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+        // 2. Initialize jsPDF (A4)
+        const pdf = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4'
+        });
 
-      const canvas = await html2canvas(clone, {
-        scale: 2, 
-        useCORS: true,
-        logging: false,
-        backgroundColor: theme === 'cyber' ? '#05050a' : '#ffffff',
-        width: A4_WIDTH_PX, 
-        windowWidth: A4_WIDTH_PX, 
-      });
+        const imgProps = pdf.getImageProperties(imgDataUrl);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-      document.body.removeChild(container);
+        // 3. Add Image to PDF
+        pdf.addImage(imgDataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
 
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      
-      const imgProps = pdf.getImageProperties(imgData);
-      const imgHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, imgHeight);
-      pdf.save(`${data.fullName.replace(/\s+/g, '_')}_Portfolio.pdf`);
+        // 4. Save
+        pdf.save(`${data.fullName.replace(/\s+/g, '_')}_Resume.pdf`);
 
     } catch (err) {
-      console.error("PDF Generation failed", err);
-      alert("Could not generate PDF. Please try using the browser's Print function (Ctrl+P).");
+        console.error("PDF Generation failed", err);
+        alert("Could not generate PDF automatically. Please try the PNG download instead.");
     } finally {
-      setIsGenerating(false);
+        setIsGenerating(false);
     }
   };
 
@@ -179,38 +168,15 @@ const App: React.FC = () => {
       const element = document.getElementById('portfolio-content');
       if (!element) throw new Error("Content not found");
 
-      const A4_WIDTH_PX = 794; 
-      
-      const container = document.createElement('div');
-      container.style.position = 'absolute';
-      container.style.left = '-9999px';
-      container.style.top = '0';
-      container.style.width = `${A4_WIDTH_PX}px`; 
-      
-      const clone = element.cloneNode(true) as HTMLElement;
-      clone.style.transform = 'none'; 
-      clone.style.margin = '0';
-      
-      container.appendChild(clone);
-      document.body.appendChild(container);
-
-      await new Promise(resolve => setTimeout(resolve, 50));
-
-      const canvas = await html2canvas(clone, {
-        scale: 2, 
-        useCORS: true,
-        logging: false,
-        backgroundColor: theme === 'cyber' ? '#05050a' : '#ffffff',
-        width: A4_WIDTH_PX, 
-        windowWidth: A4_WIDTH_PX, 
+      const dataUrl = await toPng(element, {
+         quality: 1.0,
+         pixelRatio: 2, 
+         cacheBust: true,
+         backgroundColor: theme === 'cyber' ? '#05050a' : '#ffffff',
       });
 
-      document.body.removeChild(container);
-
-      const imgData = canvas.toDataURL('image/png');
-      
       const link = document.createElement('a');
-      link.href = imgData;
+      link.href = dataUrl;
       link.download = `${data.fullName.replace(/\s+/g, '_')}_Portfolio.png`;
       document.body.appendChild(link);
       link.click();
@@ -218,7 +184,7 @@ const App: React.FC = () => {
 
     } catch (err) {
       console.error("PNG Generation failed", err);
-      alert("Could not generate PNG.");
+      alert("Could not generate PNG. Browser security might be blocking cross-origin images.");
     } finally {
       setIsGenerating(false);
     }
@@ -232,7 +198,7 @@ const App: React.FC = () => {
           <div className="flex items-center gap-2">
             <Sparkles className="text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
             <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-200 via-blue-200 to-cyan-200 font-thai tracking-wide drop-shadow-sm">
-              Create Portfolio & Resume
+              Folio Creator
             </h1>
           </div>
           
