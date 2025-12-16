@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Folio Creator - Free Portfolio & Resume Builder</title>
+    <meta name="title" content="Folio Creator - สร้างพอร์ตโฟลิโอ & เรซูเม่ฟรีด้วย AI">
+    <meta name="description" content="สร้าง Portfolio และ Resume (CV) สุดล้ำสไตล์ Glassmorphism ด้วย AI อัจฉริยะ รองรับภาษาไทย/อังกฤษ 100% ปรับแต่งง่าย ส่งออก PDF ฟรีทันที!">
+    <meta name="keywords" content="Portfolio, Resume, CV, Builder, AI, Glassmorphism, Free, Thai, English, พอร์ตโฟลิโอ, เรซูเม่, ทำพอร์ตฟรี, สมัครงาน, สร้างเรซูเม่">
+    <meta name="author" content="Folio Creator">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://foliocreator.ai/">
+    <meta property="og:title" content="Folio Creator - สร้างพอร์ตโฟลิโอฟรีด้วย AI">
+    <meta property="og:description" content="สร้าง Portfolio และ Resume (CV) สุดล้ำสไตล์ Glassmorphism ด้วย AI อัจฉริยะ รองรับภาษาไทย/อังกฤษ 100% ปรับแต่งง่าย ส่งออก PDF ฟรีทันที!">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Folio Creator - สร้างพอร์ตโฟลิโอฟรีด้วย AI">
+    <meta property="twitter:description" content="สร้าง Portfolio และ Resume (CV) สุดล้ำสไตล์ Glassmorphism ด้วย AI อัจฉริยะ รองรับภาษาไทย/อังกฤษ 100% ปรับแต่งง่าย ส่งออก PDF ฟรีทันที!">
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop">
+
+    <!-- Favicon (SVG Data URI) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2306b6d4;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%233b82f6;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='25' fill='%230f172a' /%3E%3Cpath d='M50 20 L80 35 L80 65 L50 80 L20 65 L20 35 Z' fill='url(%23grad)' stroke='rgba(255,255,255,0.2)' stroke-width='2' /%3E%3Ctext x='50' y='63' font-family='sans-serif' font-size='45' font-weight='900' fill='white' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonts: Kanit for Thai/English support, Inter for UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              thai: ['Kanit', 'sans-serif'],
+            },
+            colors: {
+              glass: {
+                100: 'rgba(15, 23, 42, 0.3)',  // Darker blue tint
+                200: 'rgba(30, 58, 138, 0.25)', // Blue metallic tint
+                300: 'rgba(59, 130, 246, 0.15)',
+                border: 'rgba(56, 189, 248, 0.3)', // Cyan/Light Blue metallic edge
+                input: 'rgba(2, 6, 23, 0.4)',    // Deep dark blue for inputs
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        /* Metallic Blue Gradient: Deep Midnight to Royal Blue */
+        background: linear-gradient(135deg, #000428 0%, #004e92 50%, #0f172a 100%);
+        background-attachment: fixed;
+        color: #e0f2fe; /* Light sky blue text for better contrast */
+      }
+      /* Custom Scrollbar for Glassmorphism */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: rgba(15, 23, 42, 0.1);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(56, 189, 248, 0.2);
+        border-radius: 4px;
+        border: 1px solid rgba(56, 189, 248, 0.1);
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(56, 189, 248, 0.4);
+      }
+      
+      /* Print specific styles to hide UI */
+      @media print {
+        body {
+          background: white;
+          color: black;
+        }
+        .no-print {
+          display: none !important;
+        }
+        .print-container {
+          width: 100% !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          box-shadow: none !important;
+          border: none !important;
+          background: white !important;
+        }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://esm.sh/@google/genai@^1.33.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.560.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "jspdf": "https://esm.sh/jspdf@^3.0.4",
+    "html2canvas": "https://esm.sh/html2canvas@^1.4.1"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
