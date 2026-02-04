@@ -61,7 +61,7 @@ export const enhanceText = async (text: string, lang: Language, context: string 
     }
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3-flash-preview',
       contents: prompt,
     });
 
@@ -81,7 +81,7 @@ export const translateText = async (text: string, targetLang: Language): Promise
       : `Translate to English. Style: Professional, Authentic, Natural. Text: "${text}"`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3-flash-preview',
       contents: prompt,
     });
 
@@ -171,7 +171,7 @@ export const generateSuggestion = async (
     }
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3-flash-preview',
       contents: prompt,
     });
 
@@ -223,7 +223,7 @@ export const generateCoverLetter = async (
        `;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3-flash-preview',
       contents: prompt,
     });
 
@@ -263,7 +263,7 @@ export const analyzePortfolio = async (data: PortfolioData, lang: Language): Pro
            }`;
 
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
+            model: 'gemini-3-flash-preview',
             contents: prompt,
             config: {
                 responseMimeType: 'application/json'
@@ -316,7 +316,7 @@ export const suggestDesign = async (jobTitle: string, skills: string): Promise<D
         `;
 
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
+            model: 'gemini-3-flash-preview',
             contents: prompt,
             config: {
                 responseMimeType: 'application/json'
